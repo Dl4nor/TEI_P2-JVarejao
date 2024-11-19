@@ -1,3 +1,6 @@
+
+# Antigo menu de cadastro de produtos
+#  que não utiliza Banco de Dados ainda
 def CadProduto(cod, produto):
     nome = input("Qual o nome do produto?\n")
 

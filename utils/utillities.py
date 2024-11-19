@@ -16,3 +16,10 @@ def ExpDados(Produtos):
         print(f"Dados exportados com sucesso para {filename} :)")
     except Exception as e:
         print(f"Erro ao exportar dados - {e}")
+
+# Basicamente um Print específico para
+#  quando é necessário reter alguma 
+#  informação na tela antes sair dela
+def wait_print(text):
+    print(f"{text}\n")
+    input("[ENTER PARA CONTINUAR...]")

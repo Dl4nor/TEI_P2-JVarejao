@@ -1,4 +1,4 @@
-from models.database import bcrypt, sql, UUtil, collections
+from models.database import bcrypt, sql, utilU, collections
 
 # Antiga função utilizada para criar o Map
 #  dos produtos (vai ser substituída por uma

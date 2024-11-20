@@ -1,15 +1,17 @@
 
 import os
 import bcrypt
-from models import database as dbM, produto as prodM, users as userM
-from views import loginRegister as lrV, relatorios as relV
+import keyboard
+import main
+from models import database as dbM, produto as prodM, users as userM, stores as storeM
+from views import relatorios as relV, userLogin as ulV
 from utils import utillities as utilU
 
 # Tudo começa de algum lugar... Nesse caso, é daqui
 def FirstMenu():
     os.system("cls")
     
-    lrV.firstMenu_header()
+    ulV.firstMenu_header()
     try:
         x = int(input("| "))
         return x
@@ -25,7 +27,7 @@ def FirstMenu():
 def RegisterMenu():
     os.system("cls")
 
-    lrV.register_header()
+    ulV.register_header()
     username = input(
         "| Crie um username:\n"
         "| "
@@ -43,10 +45,9 @@ def RegisterMenu():
 #  jogamos esse username e a senha criptografada
 #  para a função que fará a validação de login
 def LoginMenu(qntLoginFail):
-
     os.system("cls")
 
-    lrV.login_header(qntLoginFail)
+    ulV.login_header(qntLoginFail)
     username = input(
         "| Seu username:\n"
         "| "
@@ -58,10 +59,46 @@ def LoginMenu(qntLoginFail):
     succeededLogin = userM.database_user_login(username, password)
 
     if(succeededLogin):
+        main.connectedUser = username
         return True
     else: 
         return False
 
+# Menu de loja:
+# Usuário escolhe entre criar uma nova loja
+#  ou entrar em uma loja já existente
+def StoreMenu():
+    os.system("cls")
+
+    ulV.storeMenu_header()
+    x = int(input("| "))
+
+    return x
+
+def StoreListMenu():
+    os.system("cls")
+
+    userId = userM.get_userId(main.connectedUser)
+    storeList = storeM.get_storeList(userId)
+
+    store = ulV.storeListMenu_header(storeList)
+
+    print(f"Voce selecionou a loja: {store}")
+
+def storeRegisterMenu():
+
+    ulV.storeRegisterMenu_header()
+    storeName = input(
+        "| Insira o nome da loja:\n"
+        "| "  
+    )
+    storeCNPJ = input(
+        "| Insira o CNPJ da loja:\n"
+        "| "
+    )
+
+    # userM.database_user_register(username, hashed_password.decode('utf-8'))
+    storeM.database_store_register(main.connectedUser, storeName, storeCNPJ)
 
 ## 1. CRIA O MENU DO VAREJÃO DO SEU JÃO ##
 def MainMenu():
@@ -101,3 +138,15 @@ def Opcionar(x, Produtos, cod, produto):
         utilU.ExpDados(Produtos)
 
     return cod
+
+def listMenuSelect(selected, listLength):
+    key = keyboard.read_event()
+
+    if key.name == "up" and key.event_type == "down":
+        return (selected - 1) % listLength
+    elif key.name == "down" and key.event_type == "down":
+        return (selected + 1) % listLength
+    elif key.name == "enter" and key.event_type == "down":
+        return None
+    else:
+        return selected

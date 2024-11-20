@@ -1,4 +1,4 @@
-from models.database import bcrypt, sql, UUtil, collections
+from models.database import bcrypt, sql, utilU, collections
 
 # Função que insere o usuário no nosso Banco
 #  executamos essa função na opção 2 do FirstMenu()
@@ -18,13 +18,11 @@ def database_user_register(username, userPassword):
             (username, userPassword)
         )
         connect.commit()
-        print("| Usuário cadastrado com sucesso!!\n")
-        input("[ENTER PARA RETORNAR...]")
+        utilU.wait_print("| Usuário cadastrado com sucesso!!\n")
     except sql.IntegrityError:
-        print("ERRO: nome de usuário já cadastrado!!")
-        input()
+        utilU.wait_print("| ERRO: nome de usuário já cadastrado!!")
     finally:
-        connect.close
+        connect.close()
 
 # Função que valida o login do usuário
 #  executamos essa função na opção 1 do FirstMenu()
@@ -53,10 +51,26 @@ def database_user_login(username, userPassword):
         hashed_password = result[0]
 
         if(bcrypt.checkpw(userPassword.encode('utf-8'), hashed_password.encode('utf-8'))):
-            UUtil.wait_print("Login realizado com sucesso!!")
+            utilU.wait_print("Login realizado com sucesso!!")
             connect.close()
             return True
 
-    UUtil.wait_print("Falha de autenticação, tente novamente!")
+    utilU.wait_print("Falha de autenticação, tente novamente!")
     connect.close()
     return False
+
+def get_userId(username):
+    connect = sql.connect("jvarejao.db")
+    cursor = connect.cursor()
+
+    cursor.execute("""
+    SELECT id_user
+    FROM tb_users
+    WHERE username = ?
+    """, (username,))
+
+    result = cursor.fetchone()
+
+    if result:
+        return result[0]
+    return None

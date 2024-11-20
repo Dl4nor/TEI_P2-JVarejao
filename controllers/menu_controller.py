@@ -1,30 +1,21 @@
-import views.relatorios as VRel
+
 import os
-import models.produto as MProd
-import utils.utillities as UUtil
 import bcrypt
+from models import database as dbM, produto as prodM, users as userM
+from views import loginRegister as lrV, relatorios as relV
+from utils import utillities as utilU
 
 # Tudo começa de algum lugar... Nesse caso, é daqui
 def FirstMenu():
     os.system("cls")
     
+    lrV.firstMenu_header()
     try:
-        x = int(input(
-            "|--------------------------|\n"
-            "|  BEM VINDO AO J-VAREJÃO  |\n"
-            "|    Escolha uma opção     |\n"
-            "|--------------------------|\n"
-            "| [1] Login                |\n"
-            "| [2] Cadastrar            |\n"
-            "|--------------------------|\n"
-            "| [0] SAIR                 |\n"
-            "|--------------------------|\n\n"
-        ))
+        x = int(input("| "))
         return x
         
-            
     except ValueError:
-        UUtil.wait_print("Opção inválida :(")
+        utilU.wait_print("Opção inválida :(")
         return None
 
 # Menu de registro de conta:
@@ -34,10 +25,8 @@ def FirstMenu():
 def RegisterMenu():
     os.system("cls")
 
+    lrV.register_header()
     username = input(
-        "|--------------------------|\n"
-        "|  BEM VINDO AO J-VAREJÃO  |\n"
-        "|--------------------------|\n"
         "| Crie um username:\n"
         "| "
     )
@@ -47,7 +36,7 @@ def RegisterMenu():
     )
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
-    MProd.database_user_register(username, hashed_password.decode('utf-8'))
+    userM.database_user_register(username, hashed_password.decode('utf-8'))
 
 # Menu de Login:
 # O usuário insere o username e a senha,
@@ -57,11 +46,8 @@ def LoginMenu(qntLoginFail):
 
     os.system("cls")
 
+    lrV.login_header(qntLoginFail)
     username = input(
-        "|--------------------------|\n"
-        "|      TELA DE LOGIN       |\n"
-        f"|       TENTATIVA: {qntLoginFail}       |\n"
-        "|--------------------------|\n"
         "| Seu username:\n"
         "| "
     )
@@ -69,11 +55,9 @@ def LoginMenu(qntLoginFail):
         "| Sua senha:\n"
         "| "
     )
-
-    succeededLogin = MProd.database_user_login(username, password)
+    succeededLogin = userM.database_user_login(username, password)
 
     if(succeededLogin):
-        UUtil.wait_print("Usuário encontrado e logado com sucesso!!!")
         return True
     else: 
         return False
@@ -107,13 +91,13 @@ def Opcionar(x, Produtos, cod, produto):
             Produtos.append(aux)
             cod = cod + 1
     if x == 2:
-        VRel.RelProds(Produtos)
+        relV.RelProds(Produtos)
     if x == 3:
         for prod in Produtos:
             if prod.quantidade <= 5:
                 prodBaixo.append(prod)
-        VRel.RelBaixo(prodBaixo)
+        relV.RelBaixo(prodBaixo)
     if x == 4:
-        UUtil.ExpDados(Produtos)
+        utilU.ExpDados(Produtos)
 
     return cod

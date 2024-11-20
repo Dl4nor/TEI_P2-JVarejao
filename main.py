@@ -1,7 +1,7 @@
 import os
-import controllers.menu_controller as CMenu
-import models.produto as MProd
-import utils.utillities as UUtil
+from controllers import menu_controller as menuC
+from models import users as userM, database as dbM, produto as prodM
+from utils import utillities as utilU
 
 # Função main que executa o programa...
 #  é isso, acho que não tenho mais o que dizer
@@ -9,21 +9,22 @@ import utils.utillities as UUtil
 #  sendo executado do arquivo main.py, caso não
 #  o programa não abre
 def main():
-    produto = MProd.criar_produto_namedtuple()
+    produto = prodM.criar_produto_namedtuple()
     Produtos = []
     loginFail = 0
     cod = 1
 
-    MProd.database_create()
+    dbM.database_create()
     while True:
         os.system('cls')
 
-        x = CMenu.FirstMenu()
+        x = menuC.FirstMenu()
         if x==1:
             while True:
-                succededLogin = CMenu.LoginMenu(loginFail)
+                succededLogin = menuC.LoginMenu(loginFail)
                 if(succededLogin):
-                    CMenu.MainMenu()
+                    loginFail = 0
+                    menuC.MainMenu()
                     # if x == 0:
                     #     break
                     # elif x in [1, 2, 3, 4]:
@@ -34,11 +35,11 @@ def main():
                 else:
                     loginFail += 1
                 if (loginFail == 3):
-                    UUtil.wait_print("Muitas tentativas falhas, fechando o programa...")
+                    utilU.wait_print("Muitas tentativas falhas, fechando o programa...")
                     os.system("cls")
                     return 0
         elif x==2:
-            CMenu.RegisterMenu()
+            menuC.RegisterMenu()
         elif x==0:
             break
 

@@ -1,10 +1,9 @@
 
 import os
 import bcrypt
-import keyboard
 import main
-from models import database as dbM, produto as prodM, users as userM, stores as storeM
-from views import relatorios as relV, userLogin as ulV
+from models import users as userM, stores as storeM
+from views import userLogin as ulV, stores as storeV
 from utils import utillities as utilU
 
 # Tudo começa de algum lugar... Nesse caso, é daqui
@@ -57,9 +56,10 @@ def LoginMenu(qntLoginFail):
         "| "
     )
     succeededLogin = userM.database_user_login(username, password)
+    userID = userM.get_userId(username)
 
     if(succeededLogin):
-        main.connectedUser = username
+        main.connectedUserID = userID
         return True
     else: 
         return False
@@ -70,83 +70,58 @@ def LoginMenu(qntLoginFail):
 def StoreMenu():
     os.system("cls")
 
-    ulV.storeMenu_header()
-    x = int(input("| "))
-
-    return x
-
+    storeV.storeMenu_header()
+    try:
+        x = int(input("| "))
+        return x
+    except ValueError:
+        utilU.wait_print("Valor inválido!")
+    
+# Menu que lista as lojas com opções selecionáveis
+#  com >>
 def StoreListMenu():
     os.system("cls")
 
-    userId = userM.get_userId(main.connectedUser)
-    storeList = storeM.get_storeList(userId)
+    storeList = storeM.get_storeList(main.connectedUserID)
 
-    store = ulV.storeListMenu_header(storeList)
+    if not storeList:
+        return None
+    
+    selected_store = storeV.storeListMenu_header(storeList)
+    main.connectedStoreID = selected_store[0]
 
-    print(f"Voce selecionou a loja: {store}")
+    return selected_store
 
+# Menu de cadastro de lojas
 def storeRegisterMenu():
+    os.system("cls")
+    storeCNPJ = None
 
-    ulV.storeRegisterMenu_header()
+    storeV.storeRegisterMenu_header()
     storeName = input(
         "| Insira o nome da loja:\n"
         "| "  
     )
-    storeCNPJ = input(
-        "| Insira o CNPJ da loja:\n"
-        "| "
-    )
+    while storeCNPJ == None:
+        storeCNPJ = input(
+            "| Insira o CNPJ da loja:\n"
+            "| "
+        )
+        if(len(storeCNPJ) != 14):
+         storeCNPJ = None
+         utilU.wait_print("Número de CNPJ inválido, tente novamente")
 
-    # userM.database_user_register(username, hashed_password.decode('utf-8'))
-    storeM.database_store_register(main.connectedUser, storeName, storeCNPJ)
+    storeM.database_store_register(main.connectedUserID, storeName, storeCNPJ)
 
 ## 1. CRIA O MENU DO VAREJÃO DO SEU JÃO ##
-def MainMenu():
+def storeControlMenu(selectedStore):
+    os.system("cls")
+
+    storeV.storeControlMenu_header(selectedStore)
     try:
-        x = int(input(
-            "Varejão do João\n"
-            "[1] Cadastrar Produtos\n"
-            "[2] Relatório de produtos\n"
-            "[3] Relatório de Estoque Baixo\n"
-            "[4] Exportar dados\n"
-            "[0] Sair\n\n"
-        ))
+        x = int(input("| "))
         return x
-    except ValueError as ve:
-        print(f"Erro!! - Valor inválido - {ve}")
-        input("[ENTER]")
+    except ValueError:
+        utilU.wait_print(f"| Erro!! - Valor inválido")
         return None
-
-def Opcionar(x, Produtos, cod, produto):
-    from controllers.produto_controller import CadProduto
-
-    prodBaixo = []
-
-    if x == 1:
-        aux = CadProduto(cod, produto)
-        if aux != None:
-            Produtos.append(aux)
-            cod = cod + 1
-    if x == 2:
-        relV.RelProds(Produtos)
-    if x == 3:
-        for prod in Produtos:
-            if prod.quantidade <= 5:
-                prodBaixo.append(prod)
-        relV.RelBaixo(prodBaixo)
-    if x == 4:
-        utilU.ExpDados(Produtos)
-
-    return cod
-
-def listMenuSelect(selected, listLength):
-    key = keyboard.read_event()
-
-    if key.name == "up" and key.event_type == "down":
-        return (selected - 1) % listLength
-    elif key.name == "down" and key.event_type == "down":
-        return (selected + 1) % listLength
-    elif key.name == "enter" and key.event_type == "down":
-        return None
-    else:
-        return selected
+    

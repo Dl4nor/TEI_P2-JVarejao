@@ -2,6 +2,9 @@ import sys
 import subprocess
 import utils.utillities as utilU
 
+# Função para instalar todos os pacotes
+#  necessários para o funcionamento do
+#  programa antes de sua execução
 def install_packages():
     required_packages = [
         "bcrypt",

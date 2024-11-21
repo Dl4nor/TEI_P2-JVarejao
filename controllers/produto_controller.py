@@ -1,21 +1,54 @@
+import os
+import main
+from models import produto as prodM
+from views import products as prodV
+from utils import utillities as utilU
 
 # Antigo menu de cadastro de produtos
 #  que não utiliza Banco de Dados ainda
-def CadProduto(cod, produto):
-    nome = input("Qual o nome do produto?\n")
+def CadProduto():
+    os.system("cls")
+
+    prodV.registerProduct_header()
+    barcode = input(
+        "| Qual o código do produto?\n"
+        "| "
+    )
+    prodName = input(
+        "|\n"
+        "| Qual o nome do produto?\n"
+        "| "
+    )
+    print(
+        "|\n"
+        "| O valor de Venda será definido \n"
+        "|  como 1.25x o valor de compra\n"
+        "|"
+    )
+    try:
+        prodBuyVal = float(input(
+            "| Qual o valor de compra do produto?\n"
+            "| R$ "
+        ))
+    except ValueError as ve:
+        print("| Erro!!! - Valor inserido não é compatível!!")
 
     try:
-        valComp = float(input("Qual o valor de compra do produto?\n"))
+        prodQnt = int(input(
+            "|\n"
+            "| Qual a quantidade em estoque?\n"
+            "| "
+        ))
     except ValueError as ve:
-        print(f"Erro!!! - Valor inserido não é compatível - {ve}")
-        return
+        print("| Erro!!! - Valor inserido não é compatível")
 
-    try:
-        qnt = int(input("Qual a quantidade em estoque?\n"))
-    except ValueError as ve:
-        print(f"Erro!!! - Valor inserido não é compatível - {ve}")
-        return
+    prodSellVal = prodBuyVal + (prodBuyVal * 0.25)
 
-    valVend = valComp + (valComp * 0.25)
+    utilU.wait_print(
+        "| \n"
+       f"| Valor de Venda definido para {prodSellVal}\n"
+        "| \n"
+        "| Produto cadastrado com sucesso!"
+    )
 
-    return produto(cod, nome, valComp, valVend, qnt)
+    prodM.database_product_register(main.connectedStoreID, barcode, prodName, prodBuyVal, prodSellVal, prodQnt)

@@ -1,7 +1,4 @@
-import collections
 import sqlite3 as sql
-import utils.utillities as utilU
-import bcrypt
 
 # Função que cria o banco de dados
 #  e as tabelas que utilizamos no programa
@@ -38,12 +35,18 @@ def database_create():
     CREATE TABLE IF NOT EXISTS tb_products(
         id_product       INTEGER PRIMARY KEY AUTOINCREMENT,
         id_store         INTEGER NOT NULL,
+        barcode          TEXT NOT NULL UNIQUE,
         productname      TEXT NOT NULL,
         productbuyprice  NUMERIC NOT NULL,
         productsellprice NUMERIC NOT NULL,
+        productqnt       INTEGER NOT NULL,
         FOREIGN KEY (id_store) REFERENCES tb_stores(id_store)
     )
     """)
 
     connect.commit()
     connect.close()
+
+    """
+
+    """

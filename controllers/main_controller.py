@@ -8,7 +8,8 @@ from utils import utillities as utilU
 # Esse é todo o fluxo de execução
 #  do código. Talvez dê pra entender
 #  como funciona, se bem que nem eu 
-#  entendo muito bem
+#  entendo muito... Mas eu sei que
+#  funciona :)
 def execution_flow():
     dbM.database_create()
 

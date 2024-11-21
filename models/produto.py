@@ -1,4 +1,5 @@
 import main
+import models.sales as saleM
 import utils.utillities as utilU
 import sqlite3 as sql
 
@@ -61,7 +62,7 @@ def get_lowProductList():
     productList = cursor.fetchall()
 
     if not productList:
-        utilU.wait_print("| Nenhum produto encontrada :(")
+        utilU.wait_print("| Nenhum produto encontrado :(")
         return None
 
     return productList
@@ -127,12 +128,19 @@ def sell_product(product, sellqnt):
         SET productqnt = ?
         WHERE id_product = ?
         """, (productNewQnt, productId,))
-
+        
         connect.commit()
-        utilU.wait_print(f"| Produto {productName} vendido!")
+        print(
+            f"| Produto {productName} vendido!\n"
+             "|"
+        )
     except sql.Error as e:
         utilU.wait_print(f"| Erro ao vender produto: {e}")
     finally:
         connect.close()
+
+        saleM.insert_sale(product, sellqnt)
+
+
 
 

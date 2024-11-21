@@ -112,6 +112,7 @@ def RelSelectProduct(productList):
             selected = new_selected
 
 def sellProductQnt_header():
+    os.system("cls")
     print(
         "|-------------------------|\n"
         "|          VENDAS         |\n"

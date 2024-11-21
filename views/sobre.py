@@ -14,6 +14,6 @@ def sobre():
         "| Desenvolvedores:                                       |\n"
         "|   Ronald Viana da Silva               - 2840482211014  |\n"
         "|   Guilherme Francisco Alves Rodrigues - 2840482211022  |\n"
-        "|   Murillo Francisco Pereira           - 28404822110    |\n"
+        "|   Murillo Francisco Pereira           - 2840482211012  |\n"
         "|--------------------------------------------------------|"
     )

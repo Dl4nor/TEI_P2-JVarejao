@@ -1,8 +1,8 @@
 import os
 import main
-from views import products as prodV, sobre as sobreV
+from views import products as prodV, sobre as sobreV, sales as saleV
 from controllers import menu_controller as menuC, produto_controller as prodC
-from models import users as userM, database as dbM, produto as prodM, stores as storeM
+from models import users as userM, database as dbM, produto as prodM, stores as storeM, sales as saleM
 from utils import utillities as utilU
 
 # Esse é todo o fluxo de execução
@@ -34,24 +34,26 @@ def execution_flow():
                                     prodC.CadProduto()
                                 elif storeControlMenuChoice==2:
                                     productList = prodM.get_productList()
-                                    prodV.RelProds(productList)
-                                elif storeControlMenuChoice==3:
-                                    lowProductList = prodM.get_lowProductList()
-                                    prodV.RelProds(lowProductList)
-                                elif storeControlMenuChoice==4:
-                                    productList = prodM.get_productList()
-                                    if productList != None:
-                                        productSelected = prodV.RelSelectProduct(productList)
-                                        if productSelected != None:
-                                            prodM.delete_product(productSelected)
-                                elif storeControlMenuChoice==5:
-                                    productList = prodM.get_productList()
                                     if productList != None:
                                         productSelected = prodV.RelSelectProduct(productList)
                                         if productSelected != None:
                                             sellqnt = prodC.sell_qnt(productSelected)
                                             if sellqnt >= 0:
                                                 prodM.sell_product(productSelected, sellqnt)
+                                elif storeControlMenuChoice==3:
+                                    saleV.salesMenu_header()
+                                elif storeControlMenuChoice==4:
+                                    productList = prodM.get_productList()
+                                    prodV.RelProds(productList)
+                                elif storeControlMenuChoice==5:
+                                    lowProductList = prodM.get_lowProductList()
+                                    prodV.RelProds(lowProductList)
+                                elif storeControlMenuChoice==9:
+                                    productList = prodM.get_productList()
+                                    if productList != None:
+                                        productSelected = prodV.RelSelectProduct(productList)
+                                        if productSelected != None:
+                                            prodM.delete_product(productSelected)
                                 elif storeControlMenuChoice==0:
                                     storeControlMenuChoice = None
                                     storeMenuChoice = None
@@ -70,7 +72,8 @@ def execution_flow():
                             stores = storeM.get_allStoreDicts()
                             users = userM.get_allUserDicts()
                             products = prodM.get_allProductDicts()
-                            utilU.ExpDados(users, stores, products)
+                            sales = saleM.get_allSales()
+                            utilU.ExpDados(users, stores, products, sales)
                         elif storeMenuChoice==0:
                             succededLogin = False
                             firstMenuChoide = None

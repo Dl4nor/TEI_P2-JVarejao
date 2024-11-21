@@ -44,6 +44,20 @@ def database_create():
     )
     """)
 
+    # Criar tabela de vendas
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS tb_sales(
+        id_sell         INTEGER PRIMARY KEY AUTOINCREMENT,
+        id_store        INTEGER NOT NULL,
+        id_product      INTEGER NOT NULL,
+        quantity_sold   INTEGER NOT NULL,
+        totalsale_value NUMERIC NOT NULL,
+        profit          NUMERIC NOT NULL,
+        FOREIGN KEY (id_store) REFERENCES tb_stores(id_store),
+        FOREIGN KEY (id_product) REFERENCES tb_product(id_product)
+    )
+    """)
+
     connect.commit()
     connect.close()
 
@@ -53,9 +67,12 @@ def database_create():
        f"| {selectedStore[3]}\n"
         "|------------------------------------|\n"
         "| [1] Cadastrar Produtos             |\n"
-        "| [2] Relatório de produtos          |\n"
-        "| [3] Relatório de Estoque Baixo     |\n"
-        "| [4] Excluir produtos               |\n"
+        "| [2] Efetuar Venda                  |\n"
+        "| [3] Visualizar caixa               |\n"
+        "| [4] Relatório de produtos          |\n"
+        "| [5] Relatório de Estoque Baixo     |\n"
+        "|------------------------------------|\n"
+        "| [9] Excluir produtos               |\n"
         "|------------------------------------|\n"
         "| [0] Sair                           |\n"
         "|------------------------------------|"

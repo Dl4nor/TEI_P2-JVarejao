@@ -46,7 +46,7 @@ def CadProduto():
 
     prodSellVal = prodBuyVal + (prodBuyVal * 0.25)
 
-    utilU.wait_print(
+    print(
         "| \n"
        f"| Valor de Venda definido para {prodSellVal}\n"
         "| "

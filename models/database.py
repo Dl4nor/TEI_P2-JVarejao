@@ -60,20 +60,3 @@ def database_create():
 
     connect.commit()
     connect.close()
-
-    """
-        "|------------------------------------|\n"
-       f"| {selectedStore[2]}\n"
-       f"| {selectedStore[3]}\n"
-        "|------------------------------------|\n"
-        "| [1] Cadastrar Produtos             |\n"
-        "| [2] Efetuar Venda                  |\n"
-        "| [3] Visualizar caixa               |\n"
-        "| [4] Relatório de produtos          |\n"
-        "| [5] Relatório de Estoque Baixo     |\n"
-        "|------------------------------------|\n"
-        "| [9] Excluir produtos               |\n"
-        "|------------------------------------|\n"
-        "| [0] Sair                           |\n"
-        "|------------------------------------|"
-    """

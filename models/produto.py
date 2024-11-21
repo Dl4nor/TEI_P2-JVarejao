@@ -112,4 +112,27 @@ def delete_product(product):
     finally:
         connect.close()
 
+def sell_product(product, sellqnt):
+    connect = sql.connect("jvarejao.db")
+    cursor = connect.cursor()
+
+    productId = product[0]
+    productName = product[2]
+    productQnt = product[6]
+    productNewQnt = productQnt-sellqnt
+
+    try:
+        cursor.execute("""
+        UPDATE tb_products
+        SET productqnt = ?
+        WHERE id_product = ?
+        """, (productNewQnt, productId,))
+
+        connect.commit()
+        utilU.wait_print(f"| Produto {productName} vendido!")
+    except sql.Error as e:
+        utilU.wait_print(f"| Erro ao vender produto: {e}")
+    finally:
+        connect.close()
+
 

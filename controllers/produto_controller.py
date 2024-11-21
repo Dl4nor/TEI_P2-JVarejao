@@ -32,6 +32,7 @@ def CadProduto():
         ))
     except ValueError as ve:
         print("| Erro!!! - Valor inserido não é compatível!!")
+        return None
 
     try:
         prodQnt = int(input(
@@ -41,14 +42,35 @@ def CadProduto():
         ))
     except ValueError as ve:
         print("| Erro!!! - Valor inserido não é compatível")
+        return None
 
     prodSellVal = prodBuyVal + (prodBuyVal * 0.25)
 
     utilU.wait_print(
         "| \n"
        f"| Valor de Venda definido para {prodSellVal}\n"
-        "| \n"
-        "| Produto cadastrado com sucesso!"
+        "| "
     )
 
     prodM.database_product_register(main.connectedStoreID, barcode, prodName, prodBuyVal, prodSellVal, prodQnt)
+
+def sell_qnt(product):
+
+    productName = product[3]
+    productQnt = product[6]
+
+    prodV.sellProductQnt_header()
+    try:
+        sellQnt = int(input(
+            f"| Quantos {productName} venderam?\n"
+             "| "
+        ))
+    except ValueError:
+        utilU.wait_print("| Erro! Valor inserido inválido")
+        return None
+
+    if sellQnt > productQnt:
+        utilU.wait_print("| Quantidade informada inválida!!!")
+        return -1
+    
+    return sellQnt

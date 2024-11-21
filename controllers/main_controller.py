@@ -28,7 +28,7 @@ def execution_flow():
                         storeMenuChoice = menuC.StoreMenu()
                         if storeMenuChoice==1:
                             selectedStore = menuC.StoreListMenu()
-                            while True:
+                            while True and selectedStore != None:
                                 storeControlMenuChoice = menuC.storeControlMenu(selectedStore)
                                 if storeControlMenuChoice==1:
                                     prodC.CadProduto()
@@ -40,8 +40,18 @@ def execution_flow():
                                     prodV.RelProds(lowProductList)
                                 elif storeControlMenuChoice==4:
                                     productList = prodM.get_productList()
-                                    productSelected = prodV.RelDeleteProduct(productList)
-                                    prodM.delete_product(productSelected)
+                                    if productList != None:
+                                        productSelected = prodV.RelSelectProduct(productList)
+                                        if productSelected != None:
+                                            prodM.delete_product(productSelected)
+                                elif storeControlMenuChoice==5:
+                                    productList = prodM.get_productList()
+                                    if productList != None:
+                                        productSelected = prodV.RelSelectProduct(productList)
+                                        if productSelected != None:
+                                            sellqnt = prodC.sell_qnt(productSelected)
+                                            if sellqnt >= 0:
+                                                prodM.sell_product(productSelected, sellqnt)
                                 elif storeControlMenuChoice==0:
                                     storeControlMenuChoice = None
                                     storeMenuChoice = None
@@ -51,7 +61,8 @@ def execution_flow():
                             menuC.storeRegisterMenu()
                         elif storeMenuChoice==3:
                             selectedStore = menuC.StoreListMenu()
-                            storeM.delete_store(selectedStore)
+                            if selectedStore != None:
+                                storeM.delete_store(selectedStore)
                         elif storeMenuChoice==4:
                             currentUser = userM.get_user(main.connectedUserID)
                             userM.delete_user(currentUser)

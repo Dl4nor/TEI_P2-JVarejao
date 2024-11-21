@@ -88,7 +88,8 @@ def StoreListMenu():
         return None
     
     selected_store = storeV.storeListMenu_header(storeList)
-    main.connectedStoreID = selected_store[0]
+    if selected_store != None:
+        main.connectedStoreID = selected_store[0]
 
     return selected_store
 

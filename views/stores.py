@@ -52,6 +52,8 @@ def storeListMenu_header(storeList):
 
         if new_selected is None:
             return storeList[selected]
+        elif new_selected == 'a':
+            return None
         else:
             selected = new_selected
 
@@ -76,6 +78,8 @@ def storeControlMenu_header(selectedStore):
         "| [2] Relatório de produtos          |\n"
         "| [3] Relatório de Estoque Baixo     |\n"
         "| [4] Excluir produtos               |\n"
+        "|------------------------------------|\n"
+        "| [5] Efetuar Venda                  |\n"
         "|------------------------------------|\n"
         "| [0] Sair                           |\n"
         "|------------------------------------|"

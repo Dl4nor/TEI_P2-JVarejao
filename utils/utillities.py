@@ -69,6 +69,8 @@ def listMenuSelect(selected, listLength):
         return (selected + 1) % listLength
     elif key.name == "enter" and key.event_type == "down":
         return None
+    elif key.name == '0' and key.event_type == "down":
+        return 'a'
     else:
         return selected
 

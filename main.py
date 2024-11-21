@@ -17,3 +17,4 @@ if __name__ == "__main__":
     os.system("cls")
     pacC.install_packages()
     main()
+    

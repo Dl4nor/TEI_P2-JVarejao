@@ -48,5 +48,15 @@ def database_create():
     connect.close()
 
     """
-
+        "|------------------------------------|\n"
+       f"| {selectedStore[2]}\n"
+       f"| {selectedStore[3]}\n"
+        "|------------------------------------|\n"
+        "| [1] Cadastrar Produtos             |\n"
+        "| [2] Relatório de produtos          |\n"
+        "| [3] Relatório de Estoque Baixo     |\n"
+        "| [4] Excluir produtos               |\n"
+        "|------------------------------------|\n"
+        "| [0] Sair                           |\n"
+        "|------------------------------------|"
     """

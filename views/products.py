@@ -51,7 +51,7 @@ def RelProds(productList):
 # Mostra o relatório dos produtos sendo um menu
 #  selecionável, para que o usuário escolha um
 #  produto para deletar da loja
-def RelDeleteProduct(productList):
+def RelSelectProduct(productList):
 
     selected = 0
 
@@ -106,6 +106,15 @@ def RelDeleteProduct(productList):
 
         if new_selected is None:
             return productList[selected]
+        elif new_selected == 'a':
+            return None
         else:
             selected = new_selected
 
+def sellProductQnt_header():
+    print(
+        "|-------------------------|\n"
+        "|          VENDAS         |\n"
+        "|-------------------------|\n"
+        "|"
+    )

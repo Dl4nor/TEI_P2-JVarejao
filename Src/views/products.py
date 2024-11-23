@@ -1,3 +1,4 @@
+import controllers.menu_controller as menuC
 import utils.utillities as utilU
 import os
 
@@ -102,7 +103,7 @@ def RelSelectProduct(productList):
                     f"{prod[5]:.2f}".ljust(maxValVend), "|", 
                     f"{prod[6]}".ljust(maxQnt))
                 
-        new_selected = utilU.listMenuSelect(selected, len(productList))
+        new_selected = menuC.listMenuSelect(selected, len(productList))
 
         if new_selected is None:
             return productList[selected]
@@ -111,6 +112,9 @@ def RelSelectProduct(productList):
         else:
             selected = new_selected
 
+# Header da função sell_qnt()
+#  onde é realizada a venda de
+#  produtos cadastrados
 def sellProductQnt_header():
     os.system("cls")
     print(

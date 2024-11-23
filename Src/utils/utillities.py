@@ -1,9 +1,11 @@
 import json
-import keyboard
 import zipfile
 import os
 
-## 5. EXPORTA OS DADOS PARA UM ARQUIVO .json ##
+# Exporta dados para quatro arquivos .json
+#  users, stores, products e sales
+#  Compata todos para um .zip e exclui
+#  as versões não compactadas
 def ExpDados(userDict, storeDict, productDict, salesDict):
     if not productDict and not storeDict and not userDict:
         print("Nenhum produto cadastrado para exportar...")
@@ -61,24 +63,4 @@ def ExpDados(userDict, storeDict, productDict, salesDict):
 def wait_print(text):
     print(f"{text}\n")
     input("[ENTER PARA CONTINUAR...]")
-
-# Lógica usada para fazer o menu selecionável 
-# (up, down)
-#  basicamente pega o Length de uma lista
-#  e retorna o elemento selecionado com
-#  base no tamanho da lista, nunca 
-#  ultrapassando nem para cima, nem para baixo
-def listMenuSelect(selected, listLength):
-    key = keyboard.read_event(suppress=True)
-
-    if key.name == "up" and key.event_type == "down":
-        return (selected - 1) % listLength
-    elif key.name == "down" and key.event_type == "down":
-        return (selected + 1) % listLength
-    elif key.name == "enter" and key.event_type == "down":
-        return None
-    elif key.name == '0' and key.event_type == "down":
-        return 'a'
-    else:
-        return selected
 

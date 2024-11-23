@@ -1,5 +1,5 @@
 import utils.utillities as utilU
-import models.stores as storeM
+from models import stores as storeM, produto as prodM, sales as saleM
 import bcrypt
 import sqlite3 as sql
 
@@ -44,10 +44,11 @@ def database_user_login(username, userPassword):
             FROM tb_users
             WHERE username = ?
             """, 
-            (username)
+            (username,)
         )
     except:
         print("Erro!")
+
     result = cursor.fetchone()
 
     if(result):
@@ -111,21 +112,31 @@ def delete_user(user):
     userStoreList = storeM.get_storeList(userId)
 
     try:
-        for store in userStoreList:
-            cursor.execute("""
-            DELETE FROM tb_products
-            WHERE id_store = ?
-            """, (store[0],))
+        if userStoreList:
+            for store in userStoreList:
+                storage = prodM.get_productList(store[0])
+                sales = saleM.get_saleList(store)
+                if storage:
+                    cursor.execute("""
+                    DELETE FROM tb_products
+                    WHERE id_store = ?
+                    """, (store[0],))
 
-        cursor.execute("""
-        DELETE FROM tb_stores
-        WHERE id_user = ?
-        """, (userId))
+                if sales:
+                    cursor.execute("""
+                    DELETE FROM tb_sales
+                    WHERE id_store = ?
+                    """, (store[0],))
+                    
+            cursor.execute("""
+            DELETE FROM tb_stores
+            WHERE id_user = ?
+            """, (userId,))
         
         cursor.execute("""
-        DELETE FROM tb_user
+        DELETE FROM tb_users
         WHERE id_user = ?
-        """, (userId))
+        """, (userId,))
 
         connect.commit()
         utilU.wait_print("| Usuário excluido com sucesso")

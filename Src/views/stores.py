@@ -1,4 +1,4 @@
-import utils.utillities as utilU
+import controllers.menu_controller as menuC
 import os
 
 # Header do StoreMenu(), primeiro menu
@@ -48,7 +48,7 @@ def storeListMenu_header(storeList):
                 "| "  
                 )
 
-        new_selected = utilU.listMenuSelect(selected, len(storeList))
+        new_selected = menuC.listMenuSelect(selected, len(storeList))
 
         if new_selected is None:
             return storeList[selected]

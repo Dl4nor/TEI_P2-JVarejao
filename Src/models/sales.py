@@ -2,6 +2,8 @@ import main
 import utils.utillities as utilU
 import sqlite3 as sql
 
+# Inserir dados na tabela de vendas ao
+#  efetuar a venda de algum produto
 def insert_sale(product, sellQnt):
     connect = sql.connect("jvarejao.db")
     cursor = connect.cursor()
@@ -26,6 +28,8 @@ def insert_sale(product, sellQnt):
     finally:
         cursor.close()
 
+# Recupera os dados monetários totais da tabela de
+#  vendas para a loja conectada para demonstrar no CAIXA
 def get_moneyInfo():
     connect = sql.connect("jvarejao.db")
     cursor = connect.cursor()
@@ -33,24 +37,24 @@ def get_moneyInfo():
     storeId = main.connectedStoreID
 
     cursor.execute("""
-    SELECT totalsale_value, profit
+    SELECT SUM(totalsale_value), SUM(profit)
     FROM tb_sales
     WHERE id_store = ?
     """, (storeId,))
 
-    saleList = cursor.fetchall()
+    saleData = cursor.fetchone()
 
-    if not saleList:
+    if not saleData:
         utilU.wait_print("| Nenhuma venda encontrada :(")
         return None
     
-    return saleList
-    
+    return saleData
+
+# Recupera todos os dados de vendas para exportar
+#  para JSON
 def get_allSales():
     connect = sql.connect("jvarejao.db")
     cursor = connect.cursor()
-
-    storeId = main.connectedStoreID
 
     cursor.execute("""
     SELECT *
@@ -68,3 +72,25 @@ def get_allSales():
         saleDicts.append(saleDict)
 
     return saleDicts
+
+# Recurepa a lista de vendas de uma loja
+#  específica
+def get_saleList(store):
+    connect = sql.connect("jvarejao.db")
+    cursor = connect.cursor()
+
+    storeName = store[2]
+
+    cursor.execute("""
+    SELECT *
+    FROM tb_sales
+    WHERE id_store = ?
+    """, (store[0],))
+
+    storeList = cursor.fetchall()
+
+    if not storeList:
+        utilU.wait_print(f"| Nenhuma venda registrada em {storeName} :(")
+        return None
+
+    return storeList

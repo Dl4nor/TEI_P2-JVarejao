@@ -1,2 +1,6 @@
+build/
+dist/
 __pycache__/
-jvarejao.db
+*.db
+.vscode
+*.spec

@@ -33,7 +33,7 @@ def execution_flow():
                                 if storeControlMenuChoice==1:
                                     prodC.CadProduto()
                                 elif storeControlMenuChoice==2:
-                                    productList = prodM.get_productList()
+                                    productList = prodM.get_productList(main.connectedStoreID)
                                     if productList != None:
                                         productSelected = prodV.RelSelectProduct(productList)
                                         if productSelected != None:
@@ -43,13 +43,13 @@ def execution_flow():
                                 elif storeControlMenuChoice==3:
                                     saleV.salesMenu_header()
                                 elif storeControlMenuChoice==4:
-                                    productList = prodM.get_productList()
+                                    productList = prodM.get_productList(main.connectedStoreID)
                                     prodV.RelProds(productList)
                                 elif storeControlMenuChoice==5:
-                                    lowProductList = prodM.get_lowProductList()
+                                    lowProductList = prodM.get_lowProductList(main.connectedStoreID)
                                     prodV.RelProds(lowProductList)
                                 elif storeControlMenuChoice==9:
-                                    productList = prodM.get_productList()
+                                    productList = prodM.get_productList(main.connectedStoreID)
                                     if productList != None:
                                         productSelected = prodV.RelSelectProduct(productList)
                                         if productSelected != None:
@@ -68,6 +68,9 @@ def execution_flow():
                         elif storeMenuChoice==4:
                             currentUser = userM.get_user(main.connectedUserID)
                             userM.delete_user(currentUser)
+                            succededLogin = False
+                            firstMenuChoide = None
+                            storeMenuChoice = None
                         elif storeMenuChoice==5:
                             stores = storeM.get_allStoreDicts()
                             users = userM.get_allUserDicts()

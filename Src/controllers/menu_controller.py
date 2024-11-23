@@ -1,7 +1,7 @@
-
 import os
 import bcrypt
 import main
+import keyboard
 from models import users as userM, stores as storeM
 from views import userLogin as ulV, stores as storeV
 from utils import utillities as utilU
@@ -125,4 +125,24 @@ def storeControlMenu(selectedStore):
     except ValueError:
         utilU.wait_print(f"| Erro!! - Valor inválido")
         return None
+    
+# Lógica usada para fazer o menu selecionável 
+# (up, down)
+#  basicamente pega o Length de uma lista
+#  e retorna o elemento selecionado com
+#  base no tamanho da lista, nunca 
+#  ultrapassando nem para cima, nem para baixo
+def listMenuSelect(selected, listLength):
+    key = keyboard.read_event(suppress=True)
+
+    if key.name == "up" and key.event_type == "down":
+        return (selected - 1) % listLength
+    elif key.name == "down" and key.event_type == "down":
+        return (selected + 1) % listLength
+    elif key.name == "enter" and key.event_type == "down":
+        return None
+    elif key.name == 'esc' and key.event_type == "down":
+        return 'a'
+    else:
+        return selected
     

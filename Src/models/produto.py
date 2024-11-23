@@ -25,17 +25,15 @@ def database_product_register(storeId, barcode, productName, productBuyVal, prod
 
 # função para recuperar a lista de produtos da loja
 #  atualmente conectada
-def get_productList():
+def get_productList(storeId):
     connect = sql.connect("jvarejao.db")
     cursor = connect.cursor()
-
-    storeid = main.connectedStoreID
 
     cursor.execute("""
     SELECT *
     FROM tb_products
     WHERE id_store = ?
-    """, (storeid,))
+    """, (storeId,))
 
     productList = cursor.fetchall()
 
@@ -47,17 +45,15 @@ def get_productList():
 
 # Função para recuperar produtos que estão quase
 #  acabando em estoque (quantidade < 5)
-def get_lowProductList():
+def get_lowProductList(storeId):
     connect = sql.connect("jvarejao.db")
     cursor = connect.cursor()
-
-    storeid = main.connectedStoreID
 
     cursor.execute("""
     SELECT *
     FROM tb_products
     WHERE id_store = ? AND productqnt < 5
-    """, (storeid,))
+    """, (storeId,))
 
     productList = cursor.fetchall()
 
@@ -113,6 +109,8 @@ def delete_product(product):
     finally:
         connect.close()
 
+# Lógica de venda para o produto 
+#  selecionado
 def sell_product(product, sellqnt):
     connect = sql.connect("jvarejao.db")
     cursor = connect.cursor()

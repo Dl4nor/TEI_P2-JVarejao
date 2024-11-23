@@ -54,6 +54,8 @@ def CadProduto():
 
     prodM.database_product_register(main.connectedStoreID, barcode, prodName, prodBuyVal, prodSellVal, prodQnt)
 
+# Menu pedindo para o usuário escolher quantos
+#  produtos do tipo selecionado foram vendidos
 def sell_qnt(product):
 
     productName = product[3]

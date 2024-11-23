@@ -1,6 +1,8 @@
+.vscode
+__pycache__/
 build/
 dist/
-__pycache__/
 *.db
-.vscode
 *.spec
+*.zip
+

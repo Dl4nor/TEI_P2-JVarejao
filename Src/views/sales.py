@@ -10,8 +10,12 @@ def salesMenu_header():
     
     os.system("cls")
     
-    totalSaleVal = SaleValProftValList[0]
-    totalProfit = SaleValProftValList[1]
+    if SaleValProftValList[0] and SaleValProftValList[1]:
+        totalSaleVal = SaleValProftValList[0]
+        totalProfit = SaleValProftValList[1]
+    else:
+        totalProfit = 0
+        totalSaleVal = 0
 
     utilU.wait_print(
         "|------------------------------|\n"
